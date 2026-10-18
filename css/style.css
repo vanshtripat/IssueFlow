@@ -1,0 +1,1648 @@
+
+/* =========================================================
+   ISSUEFLOW — DESIGN SYSTEM
+   A restrained, professional developer-tool interface.
+   ========================================================= */
+
+:root {
+  /* Surfaces */
+  --page-bg: #f5f6f3;
+  --sidebar-bg: #fafbf9;
+  --surface: #ffffff;
+  --surface-muted: #f8f9f7;
+  --surface-hover: #f0f3ef;
+
+  /* Text */
+  --text-primary: #202923;
+  --text-secondary: #68736b;
+  --text-tertiary: #89928b;
+  --text-inverted: #ffffff;
+
+  /* Borders */
+  --border: #e1e6e0;
+  --border-strong: #cbd4cb;
+
+  /* Brand */
+  --accent: #246447;
+  --accent-hover: #1c5138;
+  --accent-soft: #eaf3ed;
+  --accent-border: #c9dfd0;
+
+  /* Status */
+  --status-open: #24734a;
+  --status-open-bg: #eaf5ed;
+
+  --status-closed: #6e5aa5;
+  --status-closed-bg: #f0edf8;
+
+  --status-error: #b33a3a;
+  --status-error-bg: #fdf0ef;
+
+  --status-warning: #9b6c16;
+  --status-warning-bg: #fbf4df;
+
+  /* Layout */
+  --sidebar-width: 238px;
+  --content-max-width: 1440px;
+
+  /* Corners */
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 11px;
+
+  /* Shadows: subtle, not decorative */
+  --shadow-menu: 0 8px 24px rgb(24 35 27 / 8%);
+  --shadow-dialog: 0 20px 60px rgb(24 35 27 / 18%);
+
+  /* Motion */
+  --transition-fast: 140ms ease;
+}
+
+
+/* =========================================================
+   1. RESET AND GLOBAL STYLES
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  background: var(--page-bg);
+  color: var(--text-primary);
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 14px;
+  line-height: 1.55;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+p,
+h1,
+h2,
+h3 {
+  overflow-wrap: anywhere;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+/* Respect the hidden attribute even when another rule sets display. */
+[hidden] {
+  display: none !important;
+}
+
+/* Clear keyboard focus for accessibility. */
+:focus-visible {
+  outline: 3px solid rgb(36 100 71 / 35%);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: #d7e9dc;
+  color: #183d2a;
+}
+
+
+/* =========================================================
+   2. ACCESSIBILITY HELPERS
+   ========================================================= */
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 12px;
+  left: 12px;
+
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+
+  background: var(--text-primary);
+  color: var(--text-inverted);
+
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* =========================================================
+   3. APPLICATION SHELL
+   ========================================================= */
+
+.app-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+
+  min-height: 100vh;
+}
+
+.app-main {
+  min-width: 0;
+  min-height: 100vh;
+}
+
+
+/* =========================================================
+   4. SIDEBAR
+   ========================================================= */
+
+.sidebar {
+  position: sticky;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100vh;
+  min-height: 500px;
+
+  padding: 26px 15px 18px;
+
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  min-height: 38px;
+  padding: 0 8px;
+
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+
+  border-radius: 7px;
+
+  background: var(--accent);
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.brand-name {
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: -0.045em;
+}
+
+.sidebar-caption {
+  margin: 34px 10px 11px;
+
+  color: var(--text-tertiary);
+
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.105em;
+  text-transform: uppercase;
+}
+
+.primary-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  min-height: 40px;
+  padding: 9px 11px;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 550;
+  text-decoration: none;
+
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.nav-link:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.nav-link[aria-current="page"] {
+  background: var(--accent-soft);
+  border-color: #dce9df;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.nav-icon {
+  display: inline-grid;
+  place-items: center;
+
+  width: 19px;
+  flex: 0 0 19px;
+
+  color: currentColor;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 15px;
+
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-footer .sidebar-caption {
+  margin-top: 10px;
+}
+
+.sidebar-note {
+  margin: 0 10px 7px;
+
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   5. TOP BAR
+   ========================================================= */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  min-height: 83px;
+  padding: 17px clamp(20px, 3vw, 40px);
+
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-heading {
+  flex: 1 1 auto;
+  min-width: 150px;
+}
+
+.breadcrumb {
+  margin: 0 0 3px;
+
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.topbar-subtitle {
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   6. FORMS AND BUTTONS
+   ========================================================= */
+
+.repository-form {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+
+  flex: 0 1 425px;
+  min-width: 0;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-width: 0;
+
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+
+  background: var(--surface);
+  color: var(--text-primary);
+
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+input,
+select {
+  min-height: 39px;
+  padding: 8px 11px;
+}
+
+textarea {
+  min-height: 100px;
+  padding: 10px 11px;
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ba49d;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: #aebbb0;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(36 100 71 / 10%);
+}
+
+button {
+  min-height: 38px;
+
+  padding: 8px 13px;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+
+  background: var(--accent);
+  color: var(--text-inverted);
+
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+
+  white-space: nowrap;
+
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+button:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.repository-form button {
+  flex-shrink: 0;
+}
+
+.secondary-button {
+  background: var(--surface);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: var(--surface-hover);
+  border-color: #b5c2b6;
+  color: var(--text-primary);
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+
+  width: 34px;
+  min-width: 34px;
+  min-height: 34px;
+
+  padding: 0;
+
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.icon-button:hover:not(:disabled) {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+
+/* =========================================================
+   7. MAIN PAGE CONTENT
+   ========================================================= */
+
+.page-content {
+  width: 100%;
+  max-width: var(--content-max-width);
+
+  margin: 0 auto;
+  padding: 30px clamp(20px, 3vw, 40px) 22px;
+}
+
+.dashboard-section {
+  margin-top: 34px;
+  scroll-margin-top: 20px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin-bottom: 17px;
+}
+
+.section-heading > div {
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+
+  color: var(--text-secondary);
+
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.095em;
+  text-transform: uppercase;
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  font-size: 19px;
+  font-weight: 740;
+  letter-spacing: -0.035em;
+}
+
+.section-description {
+  margin: 6px 0 0;
+
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   8. REPOSITORY OVERVIEW
+   ========================================================= */
+
+.repository-overview {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding: 24px 25px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.repository-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.repository-heading .eyebrow {
+  margin-bottom: 9px;
+}
+
+.repository-heading h1 {
+  margin: 0 0 8px;
+
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 760;
+  letter-spacing: -0.055em;
+  line-height: 1.2;
+}
+
+.repository-heading > p:last-child {
+  max-width: 680px;
+  margin-bottom: 0;
+
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  color: var(--accent);
+
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.external-link:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+
+/* =========================================================
+   9. APPLICATION STATUS MESSAGES
+   ========================================================= */
+
+.app-status {
+  margin-top: 14px;
+  padding: 11px 14px;
+
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-md);
+
+  background: var(--accent-soft);
+  color: var(--accent);
+
+  font-size: 12px;
+}
+
+.app-status[data-type="error"] {
+  border-color: #f0d0cc;
+  background: var(--status-error-bg);
+  color: var(--status-error);
+}
+
+.app-status[data-type="warning"] {
+  border-color: #eadbb2;
+  background: var(--status-warning-bg);
+  color: var(--status-warning);
+}
+
+
+/* =========================================================
+   10. DASHBOARD STATISTICS
+   ========================================================= */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.stat-card {
+  min-width: 0;
+  padding: 18px 17px 16px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  transition: border-color var(--transition-fast);
+}
+
+.stat-card:hover {
+  border-color: var(--border-strong);
+}
+
+.stat-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.stat-card-header p {
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 550;
+}
+
+.stat-card-header > span {
+  display: inline-grid;
+  place-items: center;
+
+  width: 29px;
+  height: 29px;
+
+  border: 1px solid var(--border);
+  border-radius: 7px;
+
+  background: var(--surface-muted);
+  color: var(--text-secondary);
+
+  font-size: 15px;
+}
+
+.stat-value {
+  margin: 17px 0 4px;
+
+  color: var(--text-primary);
+
+  font-size: 31px;
+  font-weight: 750;
+  letter-spacing: -0.065em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-description {
+  margin: 9px 0 0;
+
+  color: var(--text-tertiary);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   11. SEARCH AND FILTER TOOLBAR
+   ========================================================= */
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.8fr) repeat(3, minmax(115px, 1fr));
+  gap: 12px;
+
+  padding: 16px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  min-width: 0;
+}
+
+.filter-field label {
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.filter-field input,
+.filter-field select {
+  font-size: 12px;
+}
+
+.filter-field select {
+  padding-right: 28px;
+}
+
+
+/* =========================================================
+   12. RESULTS TOOLBAR
+   ========================================================= */
+
+.results-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  min-height: 43px;
+  padding: 8px 2px;
+}
+
+.issue-count {
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 550;
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================================
+   13. LOADING, ERROR AND EMPTY STATES
+   ========================================================= */
+
+.state-panel {
+  padding: 32px 20px;
+
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+
+  background: var(--surface);
+  text-align: center;
+}
+
+.state-panel h3 {
+  margin: 0 0 8px;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.state-panel p {
+  max-width: 440px;
+  margin: 0 auto;
+
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.state-panel button {
+  margin-top: 16px;
+}
+
+.error-state {
+  border-color: #edcecb;
+  background: #fffcfb;
+}
+
+.error-state h3 {
+  color: var(--status-error);
+}
+
+/* Keep loading feedback simple and readable. */
+#loading-state p {
+  color: var(--text-secondary);
+}
+
+
+/* =========================================================
+   14. ISSUE LIST AND ISSUE CARDS
+   ========================================================= */
+
+.issue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  min-width: 0;
+}
+
+/*
+   Base card styles for issue elements created by JavaScript.
+   The additional selectors below support common card structures.
+*/
+
+.issue-card {
+  min-width: 0;
+  padding: 17px 18px;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  overflow-wrap: anywhere;
+
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.issue-card:hover {
+  border-color: var(--border-strong);
+}
+
+.issue-card h2,
+.issue-card h3 {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.5;
+}
+
+.issue-card p {
+  margin: 6px 0 0;
+}
+
+.issue-card a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.issue-card a:hover {
+  color: var(--accent);
+}
+
+.issue-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.issue-card-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.issue-card-title {
+  margin: 0;
+}
+
+.issue-card-title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.issue-card-number,
+.issue-number {
+  color: var(--text-tertiary);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.issue-details,
+.issue-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.issue-description {
+  margin-top: 9px;
+
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.issue-labels,
+.issue-label-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+
+  margin-top: 12px;
+
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.label-chip,
+.issue-label {
+  display: inline-flex;
+  align-items: center;
+
+  max-width: 100%;
+  padding: 3px 8px;
+
+  border: 1px solid #dce4dc;
+  border-radius: 5px;
+
+  background: #f5f8f4;
+  color: #536757;
+
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+.issue-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-top: 14px;
+  padding-top: 11px;
+
+  border-top: 1px solid #edf0ec;
+}
+
+.issue-card-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+
+/* =========================================================
+   15. STATUS AND PRIORITY BADGES
+   ========================================================= */
+
+.status-badge,
+.issue-status,
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  width: fit-content;
+  max-width: 100%;
+
+  padding: 3px 8px;
+
+  border: 1px solid transparent;
+  border-radius: 5px;
+
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-transform: capitalize;
+}
+
+.status-badge[data-status="open"],
+.issue-status[data-status="open"] {
+  border-color: #d4e8d9;
+  background: var(--status-open-bg);
+  color: var(--status-open);
+}
+
+.status-badge[data-status="closed"],
+.issue-status[data-status="closed"] {
+  border-color: #e0d9f0;
+  background: var(--status-closed-bg);
+  color: var(--status-closed);
+}
+
+.priority-badge[data-priority="high"] {
+  border-color: #f0d2cd;
+  background: #fcf0ed;
+  color: #a93f32;
+}
+
+.priority-badge[data-priority="medium"] {
+  border-color: #eadfbd;
+  background: #faf5e6;
+  color: #916b19;
+}
+
+.priority-badge[data-priority="low"] {
+  border-color: #dce4dc;
+  background: #f2f5f1;
+  color: #617065;
+}
+
+
+/* =========================================================
+   16. PINNED AND SAVED ISSUE CONTROLS
+   ========================================================= */
+
+.pin-status {
+  display: inline-block;
+
+  margin-bottom: 6px;
+
+  color: var(--status-warning);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pin-status:empty {
+  display: none;
+}
+
+.save-issue-button,
+.issue-save-button,
+.favorite-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  min-height: 31px;
+  padding: 6px 9px;
+
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-secondary);
+
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.save-issue-button:hover:not(:disabled),
+.issue-save-button:hover:not(:disabled),
+.favorite-button:hover:not(:disabled) {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.save-issue-button[aria-pressed="true"],
+.issue-save-button[aria-pressed="true"],
+.favorite-button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+
+/* =========================================================
+   17. PAGINATION
+   ========================================================= */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  margin-top: 21px;
+  padding: 8px 0;
+}
+
+.pagination button {
+  min-width: 88px;
+}
+
+#page-indicator {
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================================
+   18. ISSUE DETAILS DIALOG
+   ========================================================= */
+
+.issue-dialog {
+  width: min(680px, calc(100vw - 32px));
+  max-width: 680px;
+  max-height: min(82vh, 800px);
+
+  padding: 0;
+  overflow: auto;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: var(--surface);
+  color: var(--text-primary);
+
+  box-shadow: var(--shadow-dialog);
+}
+
+.issue-dialog::backdrop {
+  background: rgb(18 27 20 / 42%);
+  backdrop-filter: blur(2px);
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  padding: 18px 21px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.dialog-header h2 {
+  margin: 0;
+
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+}
+
+#issue-dialog-body {
+  padding: 21px;
+}
+
+#issue-dialog-body h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+#issue-dialog-body p {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  padding: 15px 21px;
+
+  border-top: 1px solid var(--border);
+  background: var(--surface-muted);
+}
+
+
+/* =========================================================
+   19. TOAST NOTIFICATIONS
+   ========================================================= */
+
+.toast-region {
+  position: fixed;
+  z-index: 1000;
+  right: 22px;
+  bottom: 22px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  width: min(360px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.toast {
+  padding: 12px 15px;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+
+  background: var(--surface);
+  color: var(--text-primary);
+
+  box-shadow: var(--shadow-menu);
+
+  font-size: 12px;
+  line-height: 1.6;
+
+  overflow-wrap: anywhere;
+}
+
+.toast[data-type="success"] {
+  border-left: 3px solid var(--accent);
+}
+
+.toast[data-type="error"] {
+  border-left: 3px solid var(--status-error);
+}
+
+.toast[data-type="warning"] {
+  border-left: 3px solid var(--status-warning);
+}
+
+
+/* =========================================================
+   20. FOOTER AND FALLBACK MESSAGES
+   ========================================================= */
+
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+
+  margin-top: 43px;
+  padding: 17px 2px 5px;
+
+  border-top: 1px solid var(--border);
+}
+
+.app-footer p {
+  margin: 0;
+
+  color: var(--text-tertiary);
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.noscript-message {
+  position: fixed;
+  z-index: 2000;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+
+  padding: 14px;
+
+  border: 1px solid #edcecb;
+  border-radius: var(--radius-md);
+
+  background: var(--status-error-bg);
+  color: var(--status-error);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   21. RESPONSIVE: SMALL LAPTOPS AND TABLETS
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  :root {
+    --sidebar-width: 205px;
+  }
+
+  .topbar {
+    gap: 13px;
+  }
+
+  .topbar-subtitle {
+    max-width: 240px;
+  }
+
+  .repository-form {
+    flex-basis: 360px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filters-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .search-field {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* =========================================================
+   22. RESPONSIVE: TABLETS AND SMALLER SCREENS
+   ========================================================= */
+
+@media (max-width: 760px) {
+  .app-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    position: static;
+
+    display: block;
+
+    width: 100%;
+    height: auto;
+    min-height: 0;
+
+    padding: 13px 18px 10px;
+
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand {
+    padding: 0 2px;
+  }
+
+  .sidebar-caption {
+    display: none;
+  }
+
+  .primary-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+
+    margin-top: 12px;
+  }
+
+  .nav-link {
+    flex: 0 0 auto;
+    min-height: 35px;
+    padding: 7px 10px;
+
+    font-size: 12px;
+  }
+
+  .nav-icon {
+    width: 16px;
+    flex-basis: 16px;
+    font-size: 15px;
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    padding: 17px 20px;
+  }
+
+  .topbar-heading {
+    flex: 1 1 100%;
+  }
+
+  .topbar-subtitle {
+    max-width: none;
+  }
+
+  .repository-form {
+    flex: 1 1 280px;
+  }
+
+  .page-content {
+    padding-top: 23px;
+  }
+}
+
+
+/* =========================================================
+   23. RESPONSIVE: MOBILE PHONES
+   ========================================================= */
+
+@media (max-width: 520px) {
+  body {
+    font-size: 13px;
+  }
+
+  .sidebar {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .brand-name {
+    font-size: 16px;
+  }
+
+  .primary-nav {
+    gap: 4px;
+  }
+
+  .nav-link {
+    gap: 7px;
+    padding: 7px 8px;
+    font-size: 11px;
+  }
+
+  .topbar {
+    gap: 11px;
+    padding: 15px 13px;
+  }
+
+  .repository-form {
+    flex: 1 1 100%;
+  }
+
+  .repository-form input {
+    min-width: 0;
+  }
+
+  .repository-form button {
+    padding-right: 10px;
+    padding-left: 10px;
+    font-size: 11px;
+  }
+
+  .topbar > .secondary-button {
+    min-height: 35px;
+  }
+
+  .page-content {
+    padding: 19px 12px;
+  }
+
+  .repository-overview {
+    flex-direction: column;
+    gap: 15px;
+
+    padding: 18px;
+  }
+
+  .repository-heading h1 {
+    font-size: 23px;
+  }
+
+  .dashboard-section {
+    margin-top: 29px;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .section-heading h2 {
+    font-size: 17px;
+  }
+
+  .section-description {
+    font-size: 11px;
+  }
+
+  .section-heading > .secondary-button {
+    padding: 7px 9px;
+    font-size: 10px;
+  }
+
+  .stats-grid {
+    gap: 9px;
+  }
+
+  .stat-card {
+    padding: 14px 12px;
+  }
+
+  .stat-card-header p {
+    font-size: 11px;
+  }
+
+  .stat-card-header > span {
+    width: 25px;
+    height: 25px;
+  }
+
+  .stat-value {
+    margin-top: 14px;
+    font-size: 27px;
+  }
+
+  .stat-description {
+    font-size: 10px;
+  }
+
+  .filters-grid {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .filter-field input,
+  .filter-field select {
+    font-size: 12px;
+  }
+
+  .issue-card {
+    padding: 14px;
+  }
+
+  .issue-card-header {
+    gap: 8px;
+  }
+
+  .issue-card h2,
+  .issue-card h3 {
+    font-size: 13px;
+  }
+
+  .pagination {
+    gap: 10px;
+  }
+
+  .pagination button {
+    min-width: 75px;
+    padding: 8px 10px;
+  }
+
+  .app-footer {
+    flex-direction: column;
+    margin-top: 30px;
+  }
+
+  .issue-dialog {
+    width: calc(100vw - 20px);
+    max-height: 88vh;
+  }
+
+  #issue-dialog-body {
+    padding: 16px;
+  }
+
+  .dialog-header,
+  .dialog-footer {
+    padding: 14px 16px;
+  }
+
+  .toast-region {
+    right: 10px;
+    bottom: 10px;
+    width: calc(100vw - 20px);
+  }
+}
+
+
+/* =========================================================
+   24. REDUCED MOTION ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

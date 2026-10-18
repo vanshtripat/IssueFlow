@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="IssueFlow is a frontend dashboard for exploring and organizing GitHub issues."
+  >
+
+  <title>IssueFlow — Issue Tracking Dashboard</title>
+
+  <!-- Our stylesheet -->
+  <link rel="stylesheet" href="./css/style.css">
+
+</head>
+
+<body>
+
+  <!-- Allows keyboard users to skip directly to the main content -->
+  <a class="skip-link" href="#main-content">
+    Skip to content
+  </a>
+
+  <div class="app-shell">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+    <aside class="sidebar" aria-label="Main sidebar">
+
+      <a class="brand" href="#overview" aria-label="IssueFlow home">
+        <span class="brand-mark" aria-hidden="true">IF</span>
+        <span class="brand-name">IssueFlow</span>
+      </a>
+
+      <p class="sidebar-caption">WORKSPACE</p>
+
+      <nav class="primary-nav" aria-label="Main navigation">
+
+        <a
+          class="nav-link"
+          href="#overview"
+          aria-current="page"
+        >
+          <span class="nav-icon" aria-hidden="true">▦</span>
+          <span>Overview</span>
+        </a>
+
+        <a class="nav-link" href="#issues">
+          <span class="nav-icon" aria-hidden="true">☷</span>
+          <span>All issues</span>
+        </a>
+
+        <a class="nav-link" href="#saved-issues">
+          <span class="nav-icon" aria-hidden="true">☆</span>
+          <span>Saved issues</span>
+        </a>
+
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="sidebar-caption">ABOUT</p>
+        <p class="sidebar-note">
+          A frontend issue-triage workspace.
+        </p>
+        <p class="sidebar-note">
+          Built with HTML, CSS and JavaScript.
+        </p>
+      </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN APPLICATION
+    ========================== -->
+    <div class="app-main">
+
+      <!-- TOP BAR -->
+      <header class="topbar">
+
+        <div class="topbar-heading">
+          <p class="breadcrumb">Workspace / Issues</p>
+          <p class="topbar-subtitle">
+            Explore and organize development issues.
+          </p>
+        </div>
+
+        <!-- Repository search form -->
+        <form
+          id="repository-form"
+          class="repository-form"
+        >
+
+          <label class="sr-only" for="repository-input">
+            GitHub repository in owner/repository format
+          </label>
+
+          <input
+            type="text"
+            id="repository-input"
+            name="repository"
+            placeholder="owner/repository"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            required
+          >
+
+          <button type="submit" id="load-repository-button">
+            Load repository
+          </button>
+
+        </form>
+
+        <button
+          type="button"
+          id="refresh-button"
+          class="secondary-button"
+          disabled
+        >
+          Refresh
+        </button>
+
+      </header>
+
+
+      <!-- MAIN CONTENT -->
+      <main id="main-content" class="page-content">
+
+        <!-- =========================
+             REPOSITORY INFORMATION
+        ========================== -->
+        <section
+          class="repository-overview"
+          aria-labelledby="repository-name"
+        >
+
+          <div class="repository-heading">
+
+            <p class="eyebrow">CURRENT REPOSITORY</p>
+
+            <h1 id="repository-name">
+              No repository selected
+            </h1>
+
+            <p id="repository-description">
+              Enter a public GitHub repository above to explore its issues.
+            </p>
+
+          </div>
+
+          <a
+            id="repository-link"
+            class="external-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            hidden
+          >
+            View on GitHub ↗
+          </a>
+
+        </section>
+
+
+        <!-- Application status and feedback -->
+        <div
+          id="app-status"
+          class="app-status"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
+
+
+        <!-- =========================
+             OVERVIEW
+        ========================== -->
+        <section
+          id="overview"
+          class="dashboard-section"
+          aria-labelledby="overview-heading"
+        >
+
+          <div class="section-heading">
+
+            <div>
+              <p class="eyebrow">AT A GLANCE</p>
+              <h2 id="overview-heading">Overview</h2>
+            </div>
+
+          </div>
+
+
+          <!-- Dashboard statistics -->
+          <div class="stats-grid">
+
+            <article class="stat-card">
+
+              <div class="stat-card-header">
+                <p>Total issues</p>
+                <span aria-hidden="true">▤</span>
+              </div>
+
+              <p class="stat-value" id="total-issues">—</p>
+
+              <p class="stat-description">
+                Issues in the current result set
+              </p>
+
+            </article>
+
+
+            <article class="stat-card">
+
+              <div class="stat-card-header">
+                <p>Open issues</p>
+                <span aria-hidden="true">◉</span>
+              </div>
+
+              <p class="stat-value" id="open-issues">—</p>
+
+              <p class="stat-description">
+                Issues awaiting resolution
+              </p>
+
+            </article>
+
+
+            <article class="stat-card">
+
+              <div class="stat-card-header">
+                <p>Closed issues</p>
+                <span aria-hidden="true">✓</span>
+              </div>
+
+              <p class="stat-value" id="closed-issues">—</p>
+
+              <p class="stat-description">
+                Issues marked as closed
+              </p>
+
+            </article>
+
+
+            <article class="stat-card">
+
+              <div class="stat-card-header">
+                <p>Saved issues</p>
+                <span aria-hidden="true">☆</span>
+              </div>
+
+              <p class="stat-value" id="saved-issues-count">0</p>
+
+              <p class="stat-description">
+                Saved in this browser
+              </p>
+
+            </article>
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             ALL ISSUES
+        ========================== -->
+        <section
+          id="issues"
+          class="dashboard-section"
+          aria-labelledby="issues-heading"
+        >
+
+          <div class="section-heading">
+
+            <div>
+              <p class="eyebrow">ISSUE EXPLORER</p>
+              <h2 id="issues-heading">All issues</h2>
+
+              <p class="section-description">
+                Search, filter, and investigate repository issues.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              id="clear-filters-button"
+              class="secondary-button"
+            >
+              Clear filters
+            </button>
+
+          </div>
+
+
+          <!-- Search and filter controls -->
+          <form
+            id="issue-filters"
+            class="filters-grid"
+          >
+
+            <div class="filter-field search-field">
+
+              <label for="issue-search">
+                Search issues
+              </label>
+
+              <input
+                type="search"
+                id="issue-search"
+                name="search"
+                placeholder="Search issue titles..."
+                autocomplete="off"
+              >
+
+            </div>
+
+
+            <div class="filter-field">
+
+              <label for="status-filter">
+                Status
+              </label>
+
+              <select id="status-filter" name="status">
+
+                <option value="all">All statuses</option>
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+
+              </select>
+
+            </div>
+
+
+            <div class="filter-field">
+
+              <label for="label-filter">
+                Label
+              </label>
+
+              <select id="label-filter" name="label">
+
+                <option value="all">All labels</option>
+
+              </select>
+
+            </div>
+
+
+            <div class="filter-field">
+
+              <label for="sort-filter">
+                Sort by
+              </label>
+
+              <select id="sort-filter" name="sort">
+
+                <option value="updated-desc">
+                  Recently updated
+                </option>
+
+                <option value="created-desc">
+                  Newest created
+                </option>
+
+                <option value="created-asc">
+                  Oldest created
+                </option>
+
+                <option value="comments-desc">
+                  Most commented
+                </option>
+
+              </select>
+
+            </div>
+
+          </form>
+
+
+          <!-- Results summary -->
+          <div class="results-toolbar">
+
+            <p
+              id="issue-count"
+              class="issue-count"
+              aria-live="polite"
+            >
+              No issues loaded yet
+            </p>
+
+          </div>
+
+
+          <!-- Loading state -->
+          <div
+            id="loading-state"
+            class="state-panel"
+            role="status"
+            aria-live="polite"
+            hidden
+          >
+
+            <p>Loading issues...</p>
+
+          </div>
+
+
+          <!-- Error state -->
+          <div
+            id="error-state"
+            class="state-panel error-state"
+            role="alert"
+            hidden
+          >
+
+            <h3>Unable to load issues</h3>
+
+            <p id="error-message">
+              Something went wrong while loading the repository.
+            </p>
+
+            <button
+              type="button"
+              id="retry-button"
+              class="secondary-button"
+            >
+              Try again
+            </button>
+
+          </div>
+
+
+          <!-- Empty results state -->
+          <div
+            id="empty-state"
+            class="state-panel"
+            hidden
+          >
+
+            <h3>No issues found</h3>
+
+            <p id="empty-state-message">
+              Try changing your search or filters.
+            </p>
+
+          </div>
+
+
+          <!-- JavaScript will insert issue cards here -->
+          <div
+            id="issue-list"
+            class="issue-list"
+            aria-label="Issue results"
+          ></div>
+
+
+          <!-- Pagination -->
+          <nav
+            id="pagination"
+            class="pagination"
+            aria-label="Issue pages"
+            hidden
+          >
+
+            <button
+              type="button"
+              id="previous-page-button"
+              class="secondary-button"
+              disabled
+            >
+              Previous
+            </button>
+
+            <span id="page-indicator">
+              Page 1
+            </span>
+
+            <button
+              type="button"
+              id="next-page-button"
+              class="secondary-button"
+              disabled
+            >
+              Next
+            </button>
+
+          </nav>
+
+        </section>
+
+
+        <!-- =========================
+             SAVED ISSUES
+        ========================== -->
+        <section
+          id="saved-issues"
+          class="dashboard-section"
+          aria-labelledby="saved-heading"
+        >
+
+          <div class="section-heading">
+
+            <div>
+              <p class="eyebrow">YOUR WORKSPACE</p>
+              <h2 id="saved-heading">Saved issues</h2>
+
+              <p class="section-description">
+                Keep track of issues you want to revisit.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div
+            id="saved-empty-state"
+            class="state-panel"
+          >
+
+            <h3>No saved issues yet</h3>
+
+            <p>
+              Save an issue from the issue explorer to see it here.
+            </p>
+
+          </div>
+
+
+          <!-- JavaScript will insert saved issue cards here -->
+          <div
+            id="saved-issue-list"
+            class="issue-list"
+            aria-label="Saved issues"
+          ></div>
+
+        </section>
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+        <footer class="app-footer">
+
+          <p>
+            IssueFlow · Built with HTML, CSS and Vanilla JavaScript.
+          </p>
+
+          <p>
+            Personal notes and saved preferences are stored in this browser.
+          </p>
+
+        </footer>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       ISSUE DETAILS DIALOG
+  ========================== -->
+  <dialog
+    id="issue-dialog"
+    class="issue-dialog"
+    aria-labelledby="issue-dialog-title"
+  >
+
+    <div class="dialog-header">
+
+      <h2 id="issue-dialog-title">
+        Issue details
+      </h2>
+
+      <button
+        type="button"
+        id="close-issue-dialog"
+        class="icon-button"
+        aria-label="Close issue details"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <!-- JavaScript will populate this section -->
+    <div id="issue-dialog-body"></div>
+
+    <div class="dialog-footer">
+
+      <a
+        id="issue-github-link"
+        class="external-link"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        hidden
+      >
+        View original issue on GitHub ↗
+      </a>
+
+    </div>
+
+  </dialog>
+
+
+  <!-- Accessible notification region -->
+  <div
+    id="toast-region"
+    class="toast-region"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
+
+
+  <!-- Message for users who have JavaScript disabled -->
+  <noscript>
+    <p class="noscript-message">
+      IssueFlow requires JavaScript to run. Please enable JavaScript
+      in your browser.
+    </p>
+  </noscript>
+
+
+  <!-- JavaScript application entry point -->
+  <script type="module" src="./js/main.js"></script>
+
+</body>
+</html>
